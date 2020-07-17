@@ -1,4 +1,4 @@
-function displayState() {
+function displayState () {
     if (state == 0) {
         basic.showLeds(`
             . # # # .
@@ -27,13 +27,10 @@ function displayState() {
             `)
         strip.showColor(neopixel.colors(NeoPixelColors.Yellow))
     }
-    
 }
-
-//  Case 0 is Ping, Case 1 is Set State
-//  Switches Case or Sends Free if in case 2
-input.onButtonPressed(Button.A, function on_button_pressed_a() {
-    
+// Case 0 is Ping, Case 1 is Set State
+// Switches Case or Sends Free if in case 2
+input.onButtonPressed(Button.A, function () {
     if (case_ == 0) {
         case_ = 1
         displayState()
@@ -44,11 +41,9 @@ input.onButtonPressed(Button.A, function on_button_pressed_a() {
         radio.sendString("free")
         case_ = 0
     }
-    
 })
-//  case 0 is base, case 1 is change personal state, case 2 is communicate
-radio.onReceivedString(function on_received_string(receivedString: string) {
-    
+// case 0 is base, case 1 is change personal state, case 2 is communicate
+radio.onReceivedString(function (receivedString) {
     if (receivedString == "You Free?") {
         if (state == 0) {
             radio.sendString("free")
@@ -59,15 +54,12 @@ radio.onReceivedString(function on_received_string(receivedString: string) {
             case_ = 2
             strip.showBarGraph(radio.receivedPacket(RadioPacketProperty.SignalStrength), 255)
         }
-        
     } else if (receivedString == "free" || receivedString == "busy") {
         basic.showString("?")
     }
-    
 })
-//  Displays waiting icon until it receives a reply 
-input.onButtonPressed(Button.B, function on_button_pressed_b() {
-    
+// Displays waiting icon until it receives a reply
+input.onButtonPressed(Button.B, function () {
     if (case_ == 0) {
         basic.showIcon(IconNames.Surprised)
         radio.sendString("You Free?")
@@ -78,9 +70,8 @@ input.onButtonPressed(Button.B, function on_button_pressed_b() {
         radio.sendString("busy")
         case_ = 0
     }
-    
 })
-let strip : neopixel.Strip = null
+let strip: neopixel.Strip = null
 let state = 0
 let case_ = 0
 let done = 0
