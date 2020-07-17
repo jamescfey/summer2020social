@@ -60,7 +60,7 @@ def on_received_string(receivedString):
         basic.show_string("?")
 radio.on_received_string(on_received_string)
 
-# Displays waiting icon until it receives a reply 
+# Displays waiting icon until it receives a reply
 
 def on_button_pressed_b():
     global state, case_
