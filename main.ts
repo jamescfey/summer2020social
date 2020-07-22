@@ -61,7 +61,8 @@ radio.onReceivedString(function on_received_string(receivedString: string) {
         }
         
     } else if (receivedString == "free" || receivedString == "busy") {
-        basic.showString("?")
+        basic.showString(receivedString)
+        case_ = 0
     }
     
 })
@@ -79,6 +80,9 @@ input.onButtonPressed(Button.B, function on_button_pressed_b() {
         case_ = 0
     }
     
+})
+input.onGesture(Gesture.Shake, function on_gesture_shake() {
+    strip.clear()
 })
 let strip : neopixel.Strip = null
 let state = 0

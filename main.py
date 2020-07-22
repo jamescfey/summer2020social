@@ -57,7 +57,8 @@ def on_received_string(receivedString):
             strip.show_bar_graph(radio.received_packet(RadioPacketProperty.SIGNAL_STRENGTH),
                 255)
     elif receivedString == "free" or receivedString == "busy":
-        basic.show_string("?")
+        basic.show_string(receivedString)
+        case_ = 0
 radio.on_received_string(on_received_string)
 
 # Displays waiting icon until it receives a reply
@@ -74,6 +75,10 @@ def on_button_pressed_b():
         radio.send_string("busy")
         case_ = 0
 input.on_button_pressed(Button.B, on_button_pressed_b)
+
+def on_gesture_shake():
+    strip.clear()
+input.on_gesture(Gesture.SHAKE, on_gesture_shake)
 
 strip: neopixel.Strip = None
 state = 0
