@@ -1,7 +1,9 @@
-//  current problem: the board doesn't revert to it's own
-//  state after requesting the state of the other board
-let stateCounter = 0
-let state = stateCounter % 3
+//  shake turns off LED
+//  board tilt to left makes you busy but ok to be interrupted 
+//  board tilt to right shows other board's status
+//  screen down makes you busy
+//  screen up makes you available 
+let state = 0
 let strip = neopixel.create(DigitalPin.P2, 20, NeoPixelMode.RGB)
 //  show state depending on number (state) received
 function req_state() {
@@ -12,23 +14,25 @@ function send_state() {
     radio.sendNumber(state)
 }
 
-input.onButtonPressed(Button.A, function on_button_pressed_a() {
+input.onGesture(Gesture.TiltLeft, function on_tilt_left() {
     
-    state = stateCounter % 3
-    stateCounter += 1
-    if (state == 0) {
-        strip.showColor(neopixel.colors(NeoPixelColors.Green))
-        strip.show()
-    } else if (state == 1) {
-        strip.showColor(neopixel.colors(NeoPixelColors.Yellow))
-        strip.show()
-    } else {
-        strip.showColor(neopixel.colors(NeoPixelColors.Red))
-        strip.show()
-    }
-    
+    state = 1
+    strip.showColor(neopixel.colors(NeoPixelColors.Yellow))
+    strip.show()
 })
-input.onButtonPressed(Button.B, function on_button_pressed_b() {
+input.onGesture(Gesture.ScreenUp, function on_screen_up() {
+    
+    state = 0
+    strip.showColor(neopixel.colors(NeoPixelColors.Green))
+    strip.show()
+})
+input.onGesture(Gesture.ScreenDown, function on_screen_down() {
+    
+    state = 2
+    strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    strip.show()
+})
+input.onGesture(Gesture.TiltRight, function on_tilt_right() {
     req_state()
     //  request state of other device
     radio.onReceivedNumber(function on_received_number(receivedNumber: number) {
@@ -45,7 +49,7 @@ input.onButtonPressed(Button.B, function on_button_pressed_b() {
         
     })
 })
-input.onButtonPressed(Button.AB, function on_button_pressed_ab() {
+input.onGesture(Gesture.Shake, function on_shake() {
     strip.clear()
     strip.show()
 })
