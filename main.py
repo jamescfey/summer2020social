@@ -143,12 +143,9 @@ input.on_gesture(Gesture.SHAKE, on_gesture_shake)
 
 Social_Scarf = False
 Ask_Me_Color = 0
-Ask_Me_Icon: Image = None
 Busy_Color = 0
-Busy_Icon: Image = None
 Public_LEDs_On = False
 Free_Color = 0
-Free_Icon: Image = None
 Timer_length = 0
 Private_LEDs2: neopixel.Strip = None
 Private_LEDs: neopixel.Strip = None
@@ -156,6 +153,30 @@ Public_LEDs: neopixel.Strip = None
 strip: neopixel.Strip = None
 state = 0
 case_ = 0
+Ask_Me_Icon: Image = None
+Busy_Icon: Image = None
+Free_Icon: Image = None
+Free_Icon = images.create_image("""
+    . # # # .
+    . # . . .
+    . # # . .
+    . # . . .
+    . # . . .
+    """)
+Busy_Icon = images.create_image("""
+    . # # . .
+    . # . # .
+    . # # . .
+    . # . # .
+    . # # . .
+    """)
+Ask_Me_Icon = images.create_image("""
+    . . # . .
+    . # . # .
+    # # # # #
+    # . . . #
+    # . . . #
+    """)
 Customize()
 done = 0
 case_ = 0
