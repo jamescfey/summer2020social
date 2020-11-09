@@ -17,23 +17,6 @@ def displayState():
         if Public_LEDs_On:
             Private_LEDs.show_color(Ask_Me_Color)
             Private_LEDs2.show_color(Ask_Me_Color)
-# Case 0 is Ping, Case 1 is Set State
-# Switches Case or Sends Free if in case 2
-
-def on_button_pressed_a():
-    global case_
-    if case_ == 0:
-        case_ = 1
-        displayState()
-    elif case_ == 1:
-        case_ = 0
-        basic.show_icon(IconNames.FABULOUS)
-    elif case_ == 2:
-        radio.send_string("free")
-        displayState()
-        case_ = 0
-input.on_button_pressed(Button.A, on_button_pressed_a)
-
 def Customize():
     global Free_Icon, Free_Color, Busy_Icon, Busy_Color, Ask_Me_Icon, Ask_Me_Color, Public_LEDs_On, Social_Scarf, Timer_length
     Free_Icon = images.create_image("""
@@ -67,6 +50,23 @@ def Customize():
     # (In Minutes)
     # Timer length is used to handle social scarf's auto ping or sporty scarfs reminder.
     Timer_length = 45
+# Case 0 is Ping, Case 1 is Set State
+# Switches Case or Sends Free if in case 2
+
+def on_button_pressed_a():
+    global case_
+    if case_ == 0:
+        case_ = 1
+        displayState()
+    elif case_ == 1:
+        case_ = 0
+        basic.show_icon(IconNames.FABULOUS)
+    elif case_ == 2:
+        radio.send_string("free")
+        displayState()
+        case_ = 0
+input.on_button_pressed(Button.A, on_button_pressed_a)
+
 # case 0 is base, case 1 is change personal state, case 2 is communicate
 
 def on_received_string(receivedString):
@@ -121,21 +121,17 @@ def on_button_pressed_b():
         case_ = 0
 input.on_button_pressed(Button.B, on_button_pressed_b)
 
-"""
-
-On Button A changes the mode as well as answers Yes when asked if free.
-
-On Button B changes your interruption state if in mode 0 or pings the other person if in mode 1 as well as answers No when asked if free.
-
-On radio received handles all potential messages 
-
-DisplayState is called to show the leds depending on the interruption status
-
-On shake clears the current LED status
-
-On start sets up the LED zones as well as handles some timer stuff.
-
-"""
+# On Button A changes the mode as well as answers Yes when asked if free.
+# 
+# On Button B changes your interruption state if in mode 0 or pings the other person if in mode 1 as well as answers No when asked if free.
+# 
+# On radio received handles all potential messages
+# 
+# DisplayState is called to show the leds depending on the interruption status
+# 
+# On shake clears the current LED status
+# 
+# On start sets up the LED zones as well as handles some timer stuff.
 
 def on_gesture_shake():
     strip.clear()
@@ -156,6 +152,7 @@ case_ = 0
 Ask_Me_Icon: Image = None
 Busy_Icon: Image = None
 Free_Icon: Image = None
+done = 0
 Free_Icon = images.create_image("""
     . # # # .
     . # . . .
@@ -178,7 +175,6 @@ Ask_Me_Icon = images.create_image("""
     # . . . #
     """)
 Customize()
-done = 0
 case_ = 0
 state = 0
 strip = neopixel.create(DigitalPin.P2, 20, NeoPixelMode.RGB)

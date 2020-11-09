@@ -23,6 +23,7 @@ function displayState () {
     }
 }
 function Customize () {
+    Brightness = 15
     Free_Icon = images.createImage(`
         . # # # .
         . # . . .
@@ -52,10 +53,10 @@ function Customize () {
     // Social Scarf Will automattically check if your friend is free based on your timer length and notify you
     Social_Scarf = true
     // Social Scarf Will automattically check if your friend is free based on your timer length and notify you
-    Sporty_Scarf = true
+    Sporty_Scarf = false
     // (In Minutes)
     // Timer length is used to handle social scarf's auto ping or sporty scarfs reminder.
-    social_timer_length = 1
+    social_timer_length = 30
     // (In Minutes)
     // Timer length is used to handle social scarf's auto ping or sporty scarfs reminder.
     sporty_timer_length = 1
@@ -85,7 +86,13 @@ radio.onReceivedString(function (receivedString) {
         } else {
             strip.showRainbow(1, 360)
             basic.pause(2000)
-            basic.showString(receivedString)
+            basic.showLeds(`
+                . # # # .
+                # . . . #
+                . . # # .
+                . . . . .
+                . . # . .
+                `)
             case_ = 2
         }
     } else if (receivedString == "free" || receivedString == "busy") {
@@ -143,6 +150,7 @@ input.onGesture(Gesture.Shake, function () {
 })
 let Sporty_Scarf = false
 let Social_Scarf = false
+let Brightness = 0
 let Ask_Me_Color = 0
 let Busy_Color = 0
 let Public_LEDs_On = false
@@ -182,7 +190,7 @@ Ask_Me_Icon = images.createImage(`
     `)
 Customize()
 case_ = 0
-state = 0
+state = 1
 strip = neopixel.create(DigitalPin.P2, 20, NeoPixelMode.RGB)
 Public_LEDs = strip.range(8, 12)
 Private_LEDs = strip.range(0, 7)
@@ -191,7 +199,16 @@ social_timer_length = social_timer_length * 60
 let social_count = social_timer_length
 sporty_timer_length = sporty_timer_length * 60
 let sporty_count = sporty_timer_length
+Public_LEDs.setBrightness(5)
+Private_LEDs.setBrightness(5)
+Private_LEDs2.setBrightness(5)
 displayState()
+basic.forever(function () {
+    Public_LEDs.setBrightness(Brightness)
+    Private_LEDs.setBrightness(Brightness)
+    Private_LEDs2.setBrightness(Brightness)
+    led.setBrightness(Brightness)
+})
 // Runs social scarf code in the background and sets the timer again (untested)
 control.inBackground(function () {
     if (Social_Scarf) {
