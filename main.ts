@@ -189,8 +189,8 @@ Ask_Me_Icon = images.createImage(`
     # . . . #
     `)
 Customize()
-case_ = 0
-state = 1
+case_ = 1
+state = 0
 strip = neopixel.create(DigitalPin.P2, 20, NeoPixelMode.RGB)
 Public_LEDs = strip.range(8, 12)
 Private_LEDs = strip.range(0, 7)
